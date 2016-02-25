@@ -1,0 +1,68 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid-bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid-bootstrap-ui.css" />
+
+</head>
+<script type="text/css">
+th
+</script>
+<body>
+<table id="mytable"></table><div id="pager3"></div>
+
+</body>
+<script type="text/javascript">
+var mydata = [{name:"王大锤",age:"12",gender:"男",country:"China"},
+		{name:"及娃娃",age:"15",gender:"男",country:"China"},
+		{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+{name:"白痴",age:"32",gender:"女",country:"China"},
+
+		{name:"二货",age:"22",gender:"女",country:"China"},
+		{name:"逗逼",age:"65",gender:"男",country:"China"}];
+$("#mytable").jqGrid({
+    data:mydata,
+    datatype:"local",
+    colNames:["姓名","年龄","性别","国家"],
+    colModel:[  {name:"name",width:100,align:'center'},
+		{name:"age",width:100,align:'center'},
+		{name:"gender",width:100,align:'center',cellattr:function(rowId,tv,rawObject,cm,rdata){ return 'id=\'gender'+rowId+"\'"}},
+		{name:"country",width:100,align:'center'}],
+
+	gridComplete:function(){
+	var gridName = "mytable";
+	Merger(gridName,'gender');
+}	 
+        
+});
+function Merger(gridName,CellName){
+var mya = $("#"+gridName).getDataIDs();
+var length = mya.length;
+for(var i = 0; i< length; i++){
+	var before = $("#"+gridName).jqGrid("getRowData",mya[i]);
+	var rowSpanTaxCount = 1;
+	for(j = i+1; j<=length; j++){
+		var end = $("#"+gridName).jqGrid("getRowData",mya[j]);
+		if(before[CellName] == end[CellName]){
+			rowSpanTaxCount++;
+			$("#"+gridName).setCell(mya[j],CellName,'',{display:'none'});
+		}else{
+			rowSpanTaxCount = 1;
+			break;
+		}
+		$("#"+CellName+mya[i]).attr("rowspan",rowSpanTaxCount);	
+	}
+}
+}
+
+</script>
+</html>
